@@ -1,7 +1,7 @@
-let {bd} = require('../databases/users')
+let { bd } = require('../databases/users')
 
 
-const getUsers = () =>{
+const getUsers = () => {
     return bd;
 }
 
@@ -9,8 +9,39 @@ const getUserById = (idUser) => {
     return bd.filter((usuario) => usuario.id === idUser);
 }
 
+const createUser = (body) => {
+    const newUser = {
+        id: (bd.length + 1).toString(),
+        name: body.name
+    }
+    bd.push(newUser);
+    return newUser;
 
-module.exports ={
+}
+
+const deleteUser = (idUser) => {
+    // percorrer o banco e encontrar quem tem o id da requisição
+    bd = bd.filter((usuario) => usuario.id != idUser);
+    return null;
+
+}
+
+const updateUser = (idUser, body) => {
+    bd = bd.map((usuario) => {
+        if (usuario.id === idUser) {
+          usuario.name = body.name;
+        }
+        return usuario
+      })
+
+      return bd;
+}
+
+
+module.exports = {
     getUsers,
-    getUserById
+    getUserById,
+    createUser,
+    deleteUser,
+    updateUser
 }
